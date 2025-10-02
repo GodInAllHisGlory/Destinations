@@ -1,0 +1,24 @@
+#header {
+    background-color: orangered;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#account-links{
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+#account-links > a{
+    margin: 10px;
+}
+
+#destinations {
+    font-size: 30px;
+}
+
+body {
+    margin: 0;
+}
