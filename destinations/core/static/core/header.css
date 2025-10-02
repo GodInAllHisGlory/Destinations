@@ -6,6 +6,16 @@
     justify-content: space-between;
 }
 
+#header a:link{
+    text-decoration: none;
+    color: white;
+}
+
+#header a:visited{
+    text-decoration: none;
+    color: white;
+}
+
 #account-links{
     margin-top: 10px;
     font-size: 20px;
