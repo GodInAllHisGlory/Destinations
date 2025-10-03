@@ -1,0 +1,12 @@
+#create_account {
+    display: grid;
+    margin: 20px;
+}
+
+#create_account > label{
+    margin: 10px;
+}
+
+#submit {
+    width: 10%;
+}

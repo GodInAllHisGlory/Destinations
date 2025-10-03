@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'core/header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/create_account.css' %}">
     <title>Create Account</title>
 </head>
 <body>
@@ -14,7 +15,16 @@
             <a>Sign In</a>
         </div>
     </div>
-    <form>
+    <form id="create_account">
+        <label>
+            Email:
+            <input id="email">
+        </label>
+        <label>
+            Password:
+            <input id="password">
+        </label>
+        <button id="submit">Enter</button>
     </form>
 </body>
 </html>
