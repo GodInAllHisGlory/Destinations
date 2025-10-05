@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'core/header.css' %}">
     <link rel="stylesheet" href="{% static 'core/create_account.css' %}">
+    <script src="{% static 'core/create_account.js' %}" defer></script>
     <title>Create Account</title>
 </head>
 <body>
@@ -15,16 +16,20 @@
             <a>Sign In</a>
         </div>
     </div>
-    <form id="create_account">
+    <form id="create_account" action="/user/" method="post">
         <label>
-            Email:
-            <input id="email">
+            Name:
+            <input id="name" name="name">
+        </label>
+        <label>
+            Email:  
+            <input id="email" name="email">
         </label>
         <label>
             Password:
-            <input id="password">
+            <input id="password" type="password" name="password">
         </label>
-        <button id="submit">Enter</button>
+        <button id="submit">Create Account</button>
     </form>
 </body>
 </html>
