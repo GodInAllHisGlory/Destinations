@@ -34,3 +34,6 @@ def user(req: HttpRequest):
     )
     user.save()
     return redirect("/")
+
+def sign_in(req: HttpRequest):
+    return render(req, "core/sign_in.html")
