@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, JsonResponse
+from django.http import HttpRequest, Http404
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User
 
-# TODO When makeing a user have it redirect to destination not '/'
+# TODO When making a user have it redirect to destination not '/'
 
 def index(req: HttpRequest):
     return render(req, "core/index.html")
@@ -12,11 +12,11 @@ def create_account(req: HttpRequest):
     return render(req, "core/create_account.html")
 
 # Makes a user from the create account form
-# If any field (name, email, password) dosen't meet the requirments it just reloads the page via redirect right now
+# If any field (name, email, password) doesn't meet the requirements it just reloads the page via redirect right now
 def user(req: HttpRequest):
     query = req.POST
-    name = query["name"]
-    email = query["email"]
+    name = query.get("name","")
+    email = query.get("email", "").lower()
     password_unhashed = query["password"]
 
     if len(name) == 0:
@@ -37,3 +37,20 @@ def user(req: HttpRequest):
 
 def sign_in(req: HttpRequest):
     return render(req, "core/sign_in.html")
+
+# Signs in the user and makes a session
+def sessions(req: HttpRequest):
+    query = req.POST
+    email = query.get("email","").lower()
+    password = query.get("password", "")
+
+    try :
+        user = User.objects.get(email = email)
+    except Exception:
+        raise Http404("Your email isn't associated with any profiles")
+    
+    if not check_password(password, user.password_hash):
+        raise Http404("Passwords don't match :/")
+    
+    return redirect("/session/new")
+        
