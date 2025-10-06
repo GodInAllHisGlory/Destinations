@@ -1,9 +1,9 @@
-#create-account {
+#sign-in {
     display: grid;
     margin: 20px;
 }
 
-#create-account > label{
+#sign-in > label{
     margin: 10px;
 }
 

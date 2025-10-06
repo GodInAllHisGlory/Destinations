@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'core/header.css' %}">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'core/sign_in.css' %}">
+    <title>Sign In</title>
 </head>
 <body>
     <div id="header">
@@ -14,5 +15,17 @@
             <a href="/user/new">Create Account</a>
         </div>
     </div>
+    <h1>Sign In</h1>
+    <form id="sign-in" action="/" >
+        <label>
+            Email:  
+            <input id="email" name="email">
+        </label>
+        <label>
+            Password:
+            <input id="password" type="password" name="password">
+        </label>
+        <button id="submit">Sign In</button>
+    </form>
 </body>
 </html>
