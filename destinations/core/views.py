@@ -47,10 +47,13 @@ def sessions(req: HttpRequest):
     try :
         user = User.objects.get(email = email)
     except Exception:
-        raise Http404("Your email isn't associated with any profiles")
+        raise Http404("Check that you have the proper email and password")
     
     if not check_password(password, user.password_hash):
-        raise Http404("Passwords don't match :/")
+        raise Http404("Check that you have the proper email and password")
     
+    # TODO Make a seesion token with the users password or email
+    # Make a seesion object
+
     return redirect("/session/new")
         
