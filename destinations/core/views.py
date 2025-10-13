@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, Http404
 from django.contrib.auth.hashers import make_password, check_password
-from .models import User
+from .models import User, Session
+import random
+import string
 
 # TODO When making a user have it redirect to destination not '/'
 
@@ -19,12 +21,17 @@ def user(req: HttpRequest):
     email = query.get("email", "").lower()
     password_unhashed = query["password"]
 
+    # If the length of the query set if 0 then it passes over otherwise it trhows an error
+    if len(User.objects.filter(email = email)):
+        return redirect("/user/new")
+
     if len(name) == 0:
         return redirect("/user/new")
-    if '@' not in email:
+    elif '@' not in email:
         return redirect("/user/new")
-    if not any(char.isdigit() for char in password_unhashed) and not len(password_unhashed) >= 8:
+    elif not any(char.isdigit() for char in password_unhashed) and not len(password_unhashed) >= 8:
         return redirect("/user/new")
+    
     password = make_password(password_unhashed)
     
     user = User(
@@ -52,8 +59,21 @@ def sessions(req: HttpRequest):
     if not check_password(password, user.password_hash):
         raise Http404("Check that you have the proper email and password")
     
-    # TODO Make a seesion token with the users password or email
-    # Make a seesion object
+    if Session.objects.filter(user = user):
+        redirect("/session/new")
 
+    session = make_session(user)
+    session.save()
     return redirect("/session/new")
+
+def make_session(user: User):
+    full_string_set = string.ascii_letters + string.digits
+    token = "".join(random.choice(full_string_set) for _ in range(128))
+    
+    session = Session(
+        user = user,
+        token = token
+    )
+
+    return session
         
