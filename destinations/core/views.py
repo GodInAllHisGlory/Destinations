@@ -21,7 +21,7 @@ def user(req: HttpRequest):
     email = query.get("email", "").lower()
     password_unhashed = query["password"]
 
-    # If the length of the query set if 0 then it passes over otherwise it trhows an error
+    # If the length of the query set if 0 then it passes over otherwise it throws an error
     if len(User.objects.filter(email = email)):
         return redirect("/user/new")
 
@@ -50,21 +50,24 @@ def sessions(req: HttpRequest):
     query = req.POST
     email = query.get("email","").lower()
     password = query.get("password", "")
+    message404 = "Check that you have the right email and password"
 
     try :
         user = User.objects.get(email = email)
     except Exception:
-        raise Http404("Check that you have the proper email and password")
+        raise Http404(message404)
     
     if not check_password(password, user.password_hash):
-        raise Http404("Check that you have the proper email and password")
+        raise Http404(message404)
     
     if Session.objects.filter(user = user):
         redirect("/session/new")
 
     session = make_session(user)
     session.save()
-    return redirect("/session/new")
+    response = redirect("/session/new")
+    response.set_cookie("session_token", session.token)
+    return response
 
 def make_session(user: User):
     full_string_set = string.ascii_letters + string.digits
