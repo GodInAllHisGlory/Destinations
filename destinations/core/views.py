@@ -87,3 +87,6 @@ def make_session(user: User):
         
 def destinations(req: HttpRequest):
     return render(req, "core/destinations.html")
+
+def new_destination(req: HttpRequest):
+    return render(req, "core/new_destination.html")
