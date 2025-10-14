@@ -20,16 +20,20 @@ def user(req: HttpRequest):
     name = query.get("name","")
     email = query.get("email", "").lower()
     password_unhashed = query["password"]
+    response = redirect("/")
 
-    # If the length of the query set if 0 then it passes over otherwise it throws an error
+    # If the length of the QuerySet if 0 then it passes over otherwise it throws an error
+    # Uses the filter method because the get method throws an error if it cannot find the object
     if len(User.objects.filter(email = email)):
         return redirect("/user/new")
 
     if len(name) == 0:
         return redirect("/user/new")
-    elif '@' not in email:
+    
+    if '@' not in email:
         return redirect("/user/new")
-    elif not any(char.isdigit() for char in password_unhashed) and not len(password_unhashed) >= 8:
+    
+    if not any(char.isdigit() for char in password_unhashed) and not len(password_unhashed) >= 8:
         return redirect("/user/new")
     
     password = make_password(password_unhashed)
@@ -40,7 +44,11 @@ def user(req: HttpRequest):
         password_hash = password
     )
     user.save()
-    return redirect("/")
+
+    session = make_session(user)
+    response.set_cookie("session_token", session.token)
+
+    return response
 
 def sign_in(req: HttpRequest):
     return render(req, "core/sign_in.html")
@@ -50,6 +58,7 @@ def sessions(req: HttpRequest):
     query = req.POST
     email = query.get("email","").lower()
     password = query.get("password", "")
+    response = redirect("/session/new")
     message404 = "Check that you have the right email and password"
 
     try :
@@ -59,13 +68,8 @@ def sessions(req: HttpRequest):
     
     if not check_password(password, user.password_hash):
         raise Http404(message404)
-    
-    if Session.objects.filter(user = user):
-        redirect("/session/new")
 
     session = make_session(user)
-    session.save()
-    response = redirect("/session/new")
     response.set_cookie("session_token", session.token)
     return response
 
@@ -78,5 +82,6 @@ def make_session(user: User):
         token = token
     )
 
+    session.save()
     return session
         
