@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/header.css' %}">
+    <title>My Destinations</title>
+</head>
+<body>
+    <div id="header">
+        <a id="destinations" href="/">Destinations</a>
+        <div id="account-links">
+            <a href="/destinations">My Destinations</a>
+            <a href="/sessions/destroy">Log Out</a>
+        </div>
+    </div>
+</body>
+</html>

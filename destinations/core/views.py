@@ -85,3 +85,5 @@ def make_session(user: User):
     session.save()
     return session
         
+def destinations(req: HttpRequest):
+    return render(req, "core/destinations.html")
