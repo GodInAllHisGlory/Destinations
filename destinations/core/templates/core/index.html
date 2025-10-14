@@ -10,10 +10,17 @@
 <body>
     <div id="header">
         <a id="destinations" href="/">Destinations</a>
+        {% if request.COOKIES.session_token %}
+        <div id="account-links">
+            <a href="/destinations">My Destinations</a>
+            <a href="/sessions/destroy">Log Out</a>
+        </div>
+        {% else %}
         <div id="account-links">
             <a href="session/new">Sign In</a>
             <a href="user/new">Create Account</a>
         </div>
+        {% endif %}
     </div>
 </body>
 </html>

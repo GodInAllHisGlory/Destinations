@@ -11,9 +11,16 @@
 <body>
     <div id="header">
         <a id="destinations" href="/">Destinations</a>
+        {% if request.COOKIES.session_token %}
+        <div id="account-links">
+            <a href="/destinations">My Destinations</a>
+            <a href="/sessions/destroy">Log Out</a>
+        </div>
+        {% else %}
         <div id="account-links">
             <a href="/session/new">Sign In</a>
         </div>
+        {% endif %}
     </div>
     <h1>Create Your Account</h1>
     <form id="create-account" action="/user/" method="post">
