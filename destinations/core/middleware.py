@@ -5,7 +5,7 @@ from .models import Session, User
 def authentication_middleware(next):
     #Gets the "session_token" cookie and if there isn't one it the token is replaced by an empty string
     def middleware(req: HttpRequest):
-        session_uris = ["/destinations"]
+        session_uris = ["/destinations", "/destinations/new"]
         uri = req.get_full_path()
         token = req.COOKIES.get("session_token", "")
         req.signed_in = False

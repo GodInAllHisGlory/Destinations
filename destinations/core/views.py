@@ -20,7 +20,7 @@ def user(req: HttpRequest):
     name = query.get("name","")
     email = query.get("email", "").lower()
     password_unhashed = query["password"]
-    response = redirect("/")
+    response = redirect("/destinations")
 
     # If the length of the QuerySet if 0 then it passes over otherwise it throws an error
     # Uses the filter method because the get method throws an error if it cannot find the object
@@ -58,7 +58,7 @@ def sessions(req: HttpRequest):
     query = req.POST
     email = query.get("email","").lower()
     password = query.get("password", "")
-    response = redirect("/session/new")
+    response = redirect("/destinations")
     message404 = "Check that you have the right email and password"
 
     try :

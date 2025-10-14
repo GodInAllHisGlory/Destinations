@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'core/header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/new_destination.css' %}">
     <title>New Destination</title>
 </head>
 <body>
@@ -14,5 +15,36 @@
             <a href="/destinations">My Destinations</a>
             <a href="/sessions/destroy">Log Out</a>
         </div>
+    </div>
+    <form id="new-destinations">
+        <label id="name">
+            Name:
+            <input name="name" type="text">
+        </label>
+
+        <label id="review">
+            Review:
+            <textarea name="review"></textarea>
+        </label>
+
+        <label id="rating">
+            Rating (Between 1-5):
+            <input type="number" name="rating" min="1" max="5">
+        </label>
+
+        <h4>Share Publicly</h4>
+        <div>
+            <label>
+                Yes
+                <input type="radio" name="share" value="True" checked>
+            </label>
+
+            <label>
+                No
+                <input type="radio" name="share" value="False">
+            </label>
+        </div>
+        <button id="submit">Create</button>
+    </form>
 </body>
 </html>
