@@ -10,4 +10,6 @@ urlpatterns = [
    path("destinations", views.destinations, name="destinations"),
    path("destinations/new", views.new_destination, name="new_destination"),
    path("destinations/create", views.create_destination, name="create_destination"),
+   path("destinations/<int:id>", views.destination_card, name="destination"),
+   path("destinations/<int:id>/edit", views.destination_edit, name="destination_edit"),
 ]

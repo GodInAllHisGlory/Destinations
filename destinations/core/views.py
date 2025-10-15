@@ -95,17 +95,14 @@ def new_destination(req: HttpRequest):
 
 def create_destination(req: HttpRequest):
     query = req.POST
-    name = query.get("name","")
-    review = query.get("review","")
-    rating = query.get("rating","")
-    share = query.get("share","")
+    name, review, rating, share = extract_destination(query)
 
     try:
         rating = int(rating)
     except Exception:
         return redirect("/destinations/new")
     
-    if name == "" or review == "" or rating < 1 or rating > 5 or share == "":
+    if check_destinations(name, review, rating, share):
         return redirect("/destinations/new")
 
     destination = Destination(
@@ -119,3 +116,39 @@ def create_destination(req: HttpRequest):
     destination.save()
 
     return redirect("/destinations")
+
+def destination_card(req: HttpRequest, id: int):
+    destination = Destination.objects.get(id = id)
+    return render(req,"core/destination.html", {"destination": destination})
+
+def destination_edit(req: HttpRequest, id: int):
+    destination = Destination.objects.get(id = id)
+    query = req.POST
+    name, review, rating, share = extract_destination(query)
+
+    try:
+        rating = int(rating)
+    except Exception:
+        return redirect("/destinations")
+    if check_destinations(name, review, rating, share):
+        return redirect("/destinations")
+    
+    destination.name = name
+    destination.review = review
+    destination.rating = rating
+    destination.share_publicly = share
+    destination.save()
+
+    return redirect("/destinations")
+
+def extract_destination(query):
+    name = query.get("name","")
+    review = query.get("review","")
+    rating = query.get("rating","")
+    share = query.get("share","")
+    return name, review, rating, share
+
+def check_destinations(name, review, rating, share):
+    if name == "" or review == "" or rating < 1 or rating > 5 or share == "":
+        return True
+    return False

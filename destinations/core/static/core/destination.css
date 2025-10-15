@@ -1,0 +1,22 @@
+#card {
+    display: grid;
+    margin: 20px;
+}
+
+#card > label {
+    margin: 5px;
+}
+
+#review {
+    display: grid;  
+}
+
+#review > textarea {
+    width: 300px;
+    height: 100px;
+}
+
+#submit {
+    width: 70px;
+    margin-top: 10px;
+}
