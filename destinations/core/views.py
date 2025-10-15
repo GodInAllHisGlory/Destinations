@@ -84,6 +84,14 @@ def make_session(user: User):
 
     session.save()
     return session
+
+def destroy_session(req: HttpRequest):
+    response = redirect("/")
+    token = req.COOKIES["session_token"]
+
+    Session.objects.get(token = token).delete()
+    response.delete_cookie("session_token")
+    return response
         
 def destinations(req: HttpRequest):
     destinations = Destination.objects.filter(user = req.user)
