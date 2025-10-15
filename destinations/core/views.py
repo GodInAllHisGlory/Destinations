@@ -129,7 +129,7 @@ def destination_card(req: HttpRequest, id: int):
     destination = Destination.objects.get(id = id)
 
     if destination.user != req.user and not destination.share_publicly:
-        return redirect("/destinations")
+        raise Http404("You don't have the permissions to do this action")
 
     return render(req,"core/destination.html", {"destination": destination})
 
@@ -137,7 +137,7 @@ def destination_edit(req: HttpRequest, id: int):
     destination = Destination.objects.get(id = id)
 
     if destination.user != req.user:
-        return redirect("/destinations")
+        raise Http404("You don't have the permissions to do this action")
 
     query = req.POST
     name, review, rating, share = extract_destination(query)
@@ -172,7 +172,8 @@ def check_destinations(name, review, rating, share):
 def delete_destination(req: HttpRequest, id: int):
     destination = Destination.objects.get(id = id)
 
-    if destination.user == req.user:
-        destination.delete()
+    if destination.user != req.user:
+        raise Http404("You don't have the permissions to do this action")
 
+    destination.delete()
     return redirect("destinations")
