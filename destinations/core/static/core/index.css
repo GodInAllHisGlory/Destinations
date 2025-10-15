@@ -1,0 +1,22 @@
+#body{
+    margin-left: 10px;
+}
+
+.card {
+    border: 2px;
+    border-style: solid;
+    margin: 10px 0px 15px 0px;
+    width: 99%;
+}
+
+.card > * {
+    margin: 10px;
+}
+
+.destination-link {
+    font-size: 25px;
+}
+
+.destination-link:visited, .destination-link:link {
+    color: blue;
+}

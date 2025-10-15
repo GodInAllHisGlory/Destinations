@@ -24,6 +24,11 @@
                 <a class="destination-link" href="/destinations/{{ destination.id }}">{{ destination.name }}</a>
                 <p>Rating: {{ destination.rating }}</p>
                 <p>{{ destination.review }}</p>
+                {% if destination.share_publicly %}
+                    <p>Public</p>
+                {% else %}
+                    <p>Private</p>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

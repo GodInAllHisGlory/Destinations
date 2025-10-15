@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'core/header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/index.css' %}">
     <title>Home</title>
 </head>
 <body>
@@ -21,6 +22,16 @@
             <a href="user/new">Create Account</a>
         </div>
         {% endif %}
+    </div>
+    <div id="body">
+        {% for destination in destinations %}
+            <div class="card">
+                <a class="destination-link" href="/destinations/{{ destination.id }}">{{ destination.name }}</a>
+                <p>Rating: {{ destination.rating }}</p>
+                <p>{{ destination.review }}</p>
+                <p>Reviewd by {{ destination.user.name }}</p>
+            </div>
+        {% endfor %}
     </div>
 </body>
 </html>

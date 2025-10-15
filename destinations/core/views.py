@@ -8,7 +8,19 @@ import string
 # TODO When making a user have it redirect to destination not '/'
 
 def index(req: HttpRequest):
-    return render(req, "core/index.html")
+    destination_query = Destination.objects.all().order_by("-id")
+    query_length = len(destination_query)
+    destinations = []
+
+    print(destination_query)
+
+    i = 0
+    while len(destinations) < 5 and i != query_length:
+        destination = destination_query[i]
+        if destination.share_publicly:
+            destinations.append(destination)
+        i += 1
+    return render(req, "core/index.html", {"destinations": destinations})
 
 def create_account(req: HttpRequest):
     return render(req, "core/create_account.html")
@@ -96,7 +108,7 @@ def destroy_session(req: HttpRequest):
 def destinations(req: HttpRequest):
     destinations = Destination.objects.filter(user = req.user)
 
-    return render(req, "core/destinations.html", {"destinations": destinations})
+    return render(req, "core/destinations.html", {"destinations": destinations.order_by("-id")})
 
 def new_destination(req: HttpRequest):
     return render(req, "core/new_destination.html")
