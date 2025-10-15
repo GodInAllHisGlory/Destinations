@@ -1,6 +1,13 @@
+#body {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    
+}
+
 #card {
     display: grid;
-    margin: 20px;
+    
 }
 
 #card > label {
@@ -19,4 +26,14 @@
 #submit {
     width: 70px;
     margin-top: 10px;
+}
+
+#delete{
+    position: fixed;
+    bottom: 0;
+    font-size: 30px;
+}
+
+#delete:visited, #delete:link {
+    color: Red;
 }

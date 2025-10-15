@@ -16,47 +16,52 @@
             <a href="/sessions/destroy">Log Out</a>
         </div>
     </div>
-    <form id="card" action="/destinations/{{ destination.id }}/edit" method="post">
-         <label id="name">
-            Name:
-            <input name="name" value="{{ destination.name }}" type="text">
-        </label>
-
-        <label id="review">
-            Review:
-            <textarea name="review">{{ destination.review }}</textarea>
-        </label>
-
-        <label id="rating">
-            Rating (Between 1-5):
-            <input type="number" name="rating" min="1" max="5" value="{{ destination.rating }}">
-        </label>
-
-        <h4>Share Publicly</h4>
-        <div>
-            {% if destination.share_publicly == 1 %}
-            <label>
-                Yes
-                <input type="radio" name="share" value="True" checked>
+    <div id="body">
+        <form id="card" action="/destinations/{{ destination.id }}/edit" method="post">
+            <label id="name">
+                Name:
+                <input name="name" value="{{ destination.name }}" type="text">
             </label>
 
-            <label>
-                No
-                <input type="radio" name="share" value="False">
-            </label>
-            {% else %}
-            <label>
-                Yes
-                <input type="radio" name="share" value="True">
+            <label id="review">
+                Review:
+                <textarea name="review">{{ destination.review }}</textarea>
             </label>
 
-            <label>
-                No
-                <input type="radio" name="share" value="False" checked>
+            <label id="rating">
+                Rating (Between 1-5):
+                <input type="number" name="rating" min="1" max="5" value="{{ destination.rating }}">
             </label>
-            {% endif %}
-        </div>
-        <button id="submit">Create</button>
-    </form>
+
+            <h4>Share Publicly</h4>
+            <div>
+                {% if destination.share_publicly == 1 %}
+                <label>
+                    Yes
+                    <input type="radio" name="share" value="True" checked>
+                </label>
+
+                <label>
+                    No
+                    <input type="radio" name="share" value="False">
+                </label>
+                {% else %}
+                <label>
+                    Yes
+                    <input type="radio" name="share" value="True">
+                </label>
+
+                <label>
+                    No
+                    <input type="radio" name="share" value="False" checked>
+                </label>
+                {% endif %}
+            </div>
+            <button id="submit">Update</button>
+        </form>
+
+        <a id="delete" href="/destinations/{{ destination.id }}/destroy">Delete</a>
+
+    </div>
 </body>
 </html>

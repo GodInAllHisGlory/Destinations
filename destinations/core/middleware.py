@@ -20,7 +20,6 @@ def authentication_middleware(next):
 
             if id:
                 destination = Destination.objects.get(id = id)
-                print(id)
                 if destination.user != user:
                     return redirect("/destinations")
 
@@ -38,7 +37,6 @@ def get_id(uri):
     for char in uri:
         if char.isdigit():
             id = id + char
-            print(id)
     if len(id) != 0:
         return id
     
