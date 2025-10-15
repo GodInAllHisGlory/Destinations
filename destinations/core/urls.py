@@ -13,4 +13,5 @@ urlpatterns = [
    path("destinations/create", views.create_destination, name="create_destination"),
    path("destinations/<int:id>", views.destination_card, name="destination"),
    path("destinations/<int:id>/edit", views.destination_edit, name="destination_edit"),
+   path("destinations/<int:id>/destroy", views.delete_destination, name="destination_destroy"),
 ]

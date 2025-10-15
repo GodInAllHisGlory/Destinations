@@ -127,10 +127,18 @@ def create_destination(req: HttpRequest):
 
 def destination_card(req: HttpRequest, id: int):
     destination = Destination.objects.get(id = id)
+
+    if destination.user != req.user and not destination.share_publicly:
+        return redirect("/destinations")
+
     return render(req,"core/destination.html", {"destination": destination})
 
 def destination_edit(req: HttpRequest, id: int):
     destination = Destination.objects.get(id = id)
+
+    if destination.user != req.user:
+        return redirect("/destinations")
+
     query = req.POST
     name, review, rating, share = extract_destination(query)
 
@@ -160,3 +168,11 @@ def check_destinations(name, review, rating, share):
     if name == "" or review == "" or rating < 1 or rating > 5 or share == "":
         return True
     return False
+
+def delete_destination(req: HttpRequest, id: int):
+    destination = Destination.objects.get(id = id)
+
+    if destination.user == req.user:
+        destination.delete()
+
+    return redirect("destinations")

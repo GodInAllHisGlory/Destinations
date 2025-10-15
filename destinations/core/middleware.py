@@ -8,9 +8,6 @@ def authentication_middleware(next):
         session_uris = ["/destinations", "/destinations/new"]
         uri = req.get_full_path()
         token = req.COOKIES.get("session_token", "")
-        id = get_id(uri)
-        if id:
-            id = int(id)
 
         #Since empty strings are falsy it will skip over getting the user if there is no token
         if token:
@@ -18,13 +15,8 @@ def authentication_middleware(next):
             user = session.user
             req.user = user
 
-            if id:
-                destination = Destination.objects.get(id = id)
-                if destination.user != user:
-                    return redirect("/destinations")
-
         #If you don't have a session then it checks to make sure you can actually go where you requested
-        elif uri in session_uris or id != None:
+        elif uri in session_uris or not find_digit(uri):
             return redirect("/session/new")
         
         res = next(req)
@@ -32,12 +24,8 @@ def authentication_middleware(next):
     
     return middleware
 
-def get_id(uri):
-    id = ""
+def find_digit(uri):
     for char in uri:
         if char.isdigit():
-            id = id + char
-    if len(id) != 0:
-        return id
-    
-    return None
+            return True
+    return False
