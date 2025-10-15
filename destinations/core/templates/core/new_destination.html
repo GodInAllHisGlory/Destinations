@@ -16,7 +16,8 @@
             <a href="/sessions/destroy">Log Out</a>
         </div>
     </div>
-    <form id="new-destinations">
+
+    <form id="new-destinations" action="/destinations/create" method="post">
         <label id="name">
             Name:
             <input name="name" type="text">
@@ -46,5 +47,6 @@
         </div>
         <button id="submit">Create</button>
     </form>
+    
 </body>
 </html>

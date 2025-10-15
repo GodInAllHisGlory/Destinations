@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, Http404
 from django.contrib.auth.hashers import make_password, check_password
-from .models import User, Session
+from .models import User, Session, Destination
 import random
 import string
 
@@ -90,3 +90,30 @@ def destinations(req: HttpRequest):
 
 def new_destination(req: HttpRequest):
     return render(req, "core/new_destination.html")
+
+def create_destination(req: HttpRequest):
+    query = req.POST
+    name = query.get("name","")
+    review = query.get("review","")
+    rating = query.get("rating","")
+    share = query.get("share","")
+
+    try:
+        rating = int(rating)
+    except Exception:
+        return redirect("/destinations/new")
+    
+    if name == "" or review == "" or rating < 1 or rating > 5 or share == "":
+        return redirect("/destinations/new")
+
+    destination = Destination(
+        name = name,
+        review = review,
+        rating = rating,
+        share_publicly = share == "True",
+        user = req.user
+    )
+
+    destination.save()
+
+    return redirect("/destinations")

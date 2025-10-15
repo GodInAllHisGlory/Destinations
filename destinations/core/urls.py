@@ -9,4 +9,5 @@ urlpatterns = [
    path("sessions", views.sessions, name="sessions"),
    path("destinations", views.destinations, name="destinations"),
    path("destinations/new", views.new_destination, name="new_destination"),
+   path("destinations/create", views.create_destination, name="create_destination"),
 ]
