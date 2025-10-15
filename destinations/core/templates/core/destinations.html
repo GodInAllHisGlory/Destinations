@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'core/header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/destinations.css'%}">
     <title>My Destinations</title>
 </head>
 <body>
@@ -15,8 +16,16 @@
             <a href="/sessions/destroy">Log Out</a>
         </div>
     </div>
-    <h1>My Destinations</h1>
-    <a href="/destinations/new">Create Destination</a>
-    
+    <div id="body">
+        <h1>My Destinations</h1>
+        <a href="/destinations/new">Create Destination</a>
+        {% for destination in destinations %}
+            <div class="card">
+                <a class="destination-link" href="/destinations/{{ destination.id }}">{{ destination.name }}</a>
+                <p>Rating: {{ destination.rating }}</p>
+                <p>{{ destination.review }}</p>
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

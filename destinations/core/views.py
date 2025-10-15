@@ -86,7 +86,9 @@ def make_session(user: User):
     return session
         
 def destinations(req: HttpRequest):
-    return render(req, "core/destinations.html")
+    destinations = Destination.objects.filter(user = req.user)
+
+    return render(req, "core/destinations.html", {"destinations": destinations})
 
 def new_destination(req: HttpRequest):
     return render(req, "core/new_destination.html")
