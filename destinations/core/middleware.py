@@ -16,7 +16,7 @@ def authentication_middleware(next):
             req.user = user
 
         #If you don't have a session then it checks to make sure you can actually go where you requested
-        elif uri in session_uris or not find_digit(uri):
+        elif uri in session_uris or find_digit(uri):
             return redirect("/session/new")
         
         res = next(req)

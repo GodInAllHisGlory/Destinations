@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, Http404
+from django.http import HttpRequest, Http404, HttpResponseBadRequest
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User, Session, Destination
 import random
@@ -37,16 +37,16 @@ def user(req: HttpRequest):
     # If the length of the QuerySet if 0 then it passes over otherwise it throws an error
     # Uses the filter method because the get method throws an error if it cannot find the object
     if len(User.objects.filter(email = email)):
-        return redirect("/user/new")
+        return HttpResponseBadRequest("Email already in use")
 
     if len(name) == 0:
-        return redirect("/user/new")
+        return HttpResponseBadRequest("Must have a name")
     
     if '@' not in email:
-        return redirect("/user/new")
+        return HttpResponseBadRequest("Must be a real email")
     
     if not any(char.isdigit() for char in password_unhashed) and not len(password_unhashed) >= 8:
-        return redirect("/user/new")
+        return HttpResponseBadRequest("Password must be at least 8 characters and have 1 number in it")
     
     password = make_password(password_unhashed)
     
@@ -138,9 +138,12 @@ def create_destination(req: HttpRequest):
     return redirect("/destinations")
 
 def destination_card(req: HttpRequest, id: int):
-    destination = Destination.objects.get(id = id)
+    try:
+        destination = Destination.objects.get(id = id)
+    except Exception:
+        raise Http404("You don't have the permissions to do this action")
 
-    if destination.user != req.user and not destination.share_publicly:
+    if destination.user != req.user:
         raise Http404("You don't have the permissions to do this action")
 
     return render(req,"core/destination.html", {"destination": destination})
