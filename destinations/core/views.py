@@ -5,14 +5,11 @@ from .models import User, Session, Destination
 import random
 import string
 
-# TODO When making a user have it redirect to destination not '/'
-
+# Gets the 5 most recent destinations and prints them out
 def index(req: HttpRequest):
     destination_query = Destination.objects.all().order_by("-id")
     query_length = len(destination_query)
     destinations = []
-
-    print(destination_query)
 
     i = 0
     while len(destinations) < 5 and i != query_length:
@@ -85,6 +82,7 @@ def sessions(req: HttpRequest):
     response.set_cookie("session_token", session.token)
     return response
 
+# Makes a session object and returns it
 def make_session(user: User):
     full_string_set = string.ascii_letters + string.digits
     token = "".join(random.choice(full_string_set) for _ in range(128))
@@ -97,6 +95,7 @@ def make_session(user: User):
     session.save()
     return session
 
+# Deletes the session cookie and session object associated with the cookie
 def destroy_session(req: HttpRequest):
     response = redirect("/")
     token = req.COOKIES["session_token"]
@@ -113,6 +112,7 @@ def destinations(req: HttpRequest):
 def new_destination(req: HttpRequest):
     return render(req, "core/new_destination.html")
 
+# Takes in a post request and makes a destination if anything is wrong it reloads the page via redirect 
 def create_destination(req: HttpRequest):
     query = req.POST
     name, review, rating, share = extract_destination(query)
@@ -120,10 +120,11 @@ def create_destination(req: HttpRequest):
     try:
         rating = int(rating)
     except Exception:
-        return redirect("/destinations/new")
+        return HttpResponseBadRequest("Rating MUST be a number")
     
-    if check_destinations(name, review, rating, share):
-        return redirect("/destinations/new")
+    bad_response = check_destinations(name, review, rating, share)
+    if bad_response != "":
+        return bad_response
 
     destination = Destination(
         name = name,
@@ -137,6 +138,7 @@ def create_destination(req: HttpRequest):
 
     return redirect("/destinations")
 
+# Renders a page that lets you edit your destination
 def destination_card(req: HttpRequest, id: int):
     try:
         destination = Destination.objects.get(id = id)
@@ -148,6 +150,7 @@ def destination_card(req: HttpRequest, id: int):
 
     return render(req,"core/destination.html", {"destination": destination})
 
+# updates the destination
 def destination_edit(req: HttpRequest, id: int):
     destination = Destination.objects.get(id = id)
 
@@ -160,9 +163,10 @@ def destination_edit(req: HttpRequest, id: int):
     try:
         rating = int(rating)
     except Exception:
-        return redirect("/destinations")
-    if check_destinations(name, review, rating, share):
-        return redirect("/destinations")
+        return HttpResponseBadRequest("Rating MUST be a number")
+    bad_response = check_destinations(name, review, rating, share)
+    if bad_response != "":
+        return bad_response
     
     destination.name = name
     destination.review = review
@@ -172,18 +176,7 @@ def destination_edit(req: HttpRequest, id: int):
 
     return redirect("/destinations")
 
-def extract_destination(query):
-    name = query.get("name","")
-    review = query.get("review","")
-    rating = query.get("rating","")
-    share = query.get("share","")
-    return name, review, rating, share
-
-def check_destinations(name, review, rating, share):
-    if name == "" or review == "" or rating < 1 or rating > 5 or share == "":
-        return True
-    return False
-
+# Endpoint that deletes a destination 
 def delete_destination(req: HttpRequest, id: int):
     destination = Destination.objects.get(id = id)
 
@@ -192,3 +185,24 @@ def delete_destination(req: HttpRequest, id: int):
 
     destination.delete()
     return redirect("destinations")
+
+
+# Gets everything from a destination object
+def extract_destination(query):
+    name = query.get("name","")
+    review = query.get("review","")
+    rating = query.get("rating","")
+    share = query.get("share","")
+    return name, review, rating, share
+
+# Checks to make sure everything the user entered is good
+def check_destinations(name, review, rating, share):
+    if name == "":
+        return HttpResponseBadRequest("Must have a name")
+    elif review == "":
+        return HttpResponseBadRequest("Must have a review")
+    elif rating < 1 or rating > 5:
+        return HttpResponseBadRequest("Rating must be valid")
+    elif share == "":
+        return HttpResponseBadRequest("I don't know how or why but you must submit yes or no to share")
+    return ""
