@@ -24,12 +24,20 @@
         {% endif %}
     </div>
     <div id="body">
+        <div id="welcome">
+            <h1>Welcome to Destinations</h1>
+            {% if request.COOKIES.session_token %}
+            <p>This is where others have been</p>
+            {% else %}
+            <p>Sign in and start making your own</p>
+        {% endif %}
+        </div>
         {% for destination in destinations %}
             <div class="card">
                 <a class="destination-link" href="/destinations/{{ destination.id }}">{{ destination.name }}</a>
                 <p>Rating: {{ destination.rating }}</p>
                 <p>{{ destination.review }}</p>
-                <p>Reviewd by {{ destination.user.name }}</p>
+                <p>Reviewed by {{ destination.user.name }}</p>
             </div>
         {% endfor %}
     </div>

@@ -20,3 +20,7 @@
 .destination-link:visited, .destination-link:link {
     color: blue;
 }
+
+#welcome > *{
+ text-align: center;
+}
